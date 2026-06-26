@@ -1,0 +1,33 @@
+    /* ═══════════════════════════════════
+       SEARCH RESULTS BANNER
+    ═══════════════════════════════════ */
+    .search-results-banner {
+      display: none; align-items: center; gap: 10px;
+      padding: 11px 18px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; margin-bottom: 20px; font-size: .85rem; color: var(--text-secondary);
+    }
+    .search-results-banner.visible { display: flex; animation: fadeUp .3s both; }
+    .search-results-banner strong { color: var(--accent); font-weight:600; }
+    .search-clear-btn {
+      margin-left: auto; background: none; border: 1px solid var(--border);
+      border-radius: var(--radius-pill); padding: 3px 11px; font-size: .75rem;
+      color: var(--text-secondary); cursor: pointer;
+      transition: border-color var(--transition), color var(--transition);
+    }
+    .search-clear-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ═══════════════════════════════════
+       YEAR TABS
+    ═══════════════════════════════════ */
+    .tabs-section { padding: 28px 0 14px; animation: fadeUp .6s .15s both; }
+    .tabs-label { font-family: var(--font-display); font-size: .68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 14px; }
+    .tabs-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tab-btn {
+      height: 40px; padding: 0 20px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-pill); color: var(--text-secondary);
+      font-family: var(--font-body); font-size: .85rem; font-weight: 500; cursor: pointer;
+      transition: all var(--transition); white-space: nowrap;
+    }
+    .tab-btn:hover:not(.active) { background: var(--surface-hover); border-color: color-mix(in srgb, var(--accent) 35%, transparent); color: var(--text-primary); }
+    .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: 0 4px 18px var(--accent-glow); font-weight: 600; }
+

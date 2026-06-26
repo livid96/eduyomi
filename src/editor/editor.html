@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eduyomi JSON Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="js/editor-theme-init.js"></script>
+  <link rel="stylesheet" href="css/editor-gate.css">
+  <link rel="stylesheet" href="css/editor-main.css">
+  <script src="js/editor-sync.js"></script>
+
+<!-- ════════════════════════════════════════
+     HTML STRUCTURE
+════════════════════════════════════════ -->
+
+<!-- ═══ AUTH GATE ═══ -->
+<div id="auth-gate">
+  <div class="gate-card">
+    <div class="gate-logo">🎓 Eduyomi</div>
+    <div class="gate-subtitle">Enter your password to access the editor</div>
+    <div class="gate-label">Username</div>
+    <div class="gate-username-wrap">
+      <input id="gate-user" type="text" placeholder="yourname"
+        autocomplete="username" autocorrect="off" autocapitalize="none" spellcheck="false"
+        onkeydown="if(event.key==='Enter')document.getElementById('gate-pw').focus()">
+      
+    </div>
+    <div class="gate-label">Password</div>
+    <div class="gate-input-wrap">
+      <input id="gate-pw" class="gate-input" type="password" placeholder="••••••••"
+        autocomplete="current-password" onkeydown="if(event.key==='Enter')gateLogin()">
+      <button class="gate-eye" onclick="gateToggleEye()" title="Show/hide">👁</button>
+    </div>
+    <div class="gate-btn-row">
+      <button class="gate-btn-cancel" onclick="window.location.href='index.html'" type="button">Cancel</button>
+      <button class="gate-btn" id="gate-submit-btn" onclick="gateLogin()">Unlock</button>
+    </div>
+    <div class="gate-error" id="gate-error">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- ═══ APP ROOT ═══ -->
+<div id="app-root">
+<div class="ambient"></div>
+<div class="mob-backdrop" id="mobBackdrop" onclick="mobCloseSidebar()"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Editor</div>
+
+  <div class="header-center">
+    <div class="header-search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="search" id="headerSearch" placeholder="Search topics, chapters, subjects…" oninput="onHeaderSearch()" onfocus="openHeaderSearch()" onblur="closeHeaderSearchDelay()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <div class="search-dropdown" id="headerSearchDrop"></div>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <!-- Theme BG -->
+    <div class="theme-btn-row">
+      <button class="theme-bg-btn" onclick="setTheme('dark')" data-t="dark">Dark</button>
+      <button class="theme-bg-btn" onclick="setTheme('amoled')" data-t="amoled">AMOLED</button>
+      <button class="theme-bg-btn" onclick="setTheme('light')" data-t="light">Light</button>
+    </div>
+    <!-- Accent dots -->
+    <div style="display:flex;gap:5px;margin:0 4px;">
+      <div class="accent-dot" style="background:#7c6af7" data-c="#7c6af7" onclick="setAccent(this)" title="Violet"></div>
+      <div class="accent-dot" style="background:#3b82f6" data-c="#3b82f6" onclick="setAccent(this)" title="Blue"></div>
+      <div class="accent-dot" style="background:#10b981" data-c="#10b981" onclick="setAccent(this)" title="Emerald"></div>
+      <div class="accent-dot" style="background:#f59e0b" data-c="#f59e0b" onclick="setAccent(this)" title="Amber"></div>
+      <div class="accent-dot" style="background:#ec4899" data-c="#ec4899" onclick="setAccent(this)" title="Pink"></div>
+    </div>
+    <button class="btn" onclick="toggleJsonPanel()">{ } JSON</button>
+  </div>
+  <!-- Close button: always visible, outside header-actions so it shows on mobile too -->
+  <button id="editorCloseBtn" onclick="window.parent?.closeSourceEditor?.()" title="Close Editor" onmouseover="this.classList.add('hov')" onmouseout="this.classList.remove('hov')">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+</header>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="resize-handle resize-handle-right" id="sidebarResizeHandle"></div>
+    <!-- GitHub Integration -->
+    <div class="gh-panel">
+      <div class="gh-panel-title" id="ghPanelTitle" onclick="toggleGhPanel()">
+        <span class="gh-toggle-arrow">▶</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0;opacity:.75"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        <span>GitHub Sync</span>
+      </div>
+      <div class="gh-panel-body" id="ghPanelBody">
+        <!-- URL and token auto-filled from Supabase login — no manual input needed -->
+        <input type="hidden" id="ghFileUrl">
+        <input type="hidden" id="ghToken" data-masked="1">
+        <div class="gh-row">
+          <button class="btn btn-sm" onclick="ghFetch()">⬇ Pull</button>
+          <button class="btn btn-sm btn-success" onclick="ghPushModal()">⬆ Push</button>
+        </div>
+        <div class="gh-commit-row" id="ghCommitRow" style="display:none">
+          <textarea id="ghCommitMsg" placeholder="Commit message…" rows="3" readonly style="resize:none;min-height:38px;max-height:140px;font-family:var(--font-mono);font-size:11.5px;line-height:1.5;padding:6px 9px;background:var(--search-bg);border:1px solid var(--border);border-radius:8px;color:var(--text-primary);outline:none;width:100%;box-sizing:border-box;cursor:default;opacity:0.85;"></textarea>
+          <button class="btn btn-sm btn-accent" onclick="ghPush()">✓ Commit</button>
+          <button class="btn btn-sm btn-danger" onclick="ghCancelCommit()">✕</button>
+        </div>
+        <div class="gh-status" id="ghStatus"></div>
+      </div>
+    </div>
+
+    <!-- Sidebar search + filter -->
+    <div class="sidebar-top">
+      <div class="sidebar-search-wrap">
+        <span class="si">🔍</span>
+        <input type="search" id="sidebarSearch" placeholder="Filter tree…" oninput="filterTree()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      </div>
+      <div class="sidebar-filter-row">
+        <div class="custom-select-wrap" id="sortSelectWrap">
+          <button class="custom-select-btn" id="sortSelectBtn" onclick="toggleCustomSelect()" aria-haspopup="listbox">
+            <span class="cs-label" id="sortSelectLabel">Original order</span>
+            <span class="cs-arrow">▾</span>
+          </button>
+          <div class="custom-select-dropdown" id="sortSelectDrop" role="listbox">
+            <div class="custom-select-option selected" data-value="natural" onclick="pickSortOption(this)">
+              <span class="cs-check">✓</span>Original order
+            </div>
+            <div class="custom-select-option" data-value="asc" onclick="pickSortOption(this)">
+              <span class="cs-check">✓</span>A → Z (Year)
+            </div>
+            <div class="custom-select-option" data-value="desc" onclick="pickSortOption(this)">
+              <span class="cs-check">✓</span>Z → A (Year)
+            </div>
+            <div class="custom-select-option" data-value="subj-asc" onclick="pickSortOption(this)">
+              <span class="cs-check">✓</span>Subjects A→Z
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-filter-row2">
+        <button class="expand-toggle" id="sidebarExpandToggle" onclick="toggleExpandAll(this)" title="Expand/collapse all">
+          <span class="toggle-track"><span class="toggle-thumb"></span></span>
+          <span>Expand All</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tree -->
+    <div class="tree-scroll" id="treeScroll"></div>
+  </div>
+
+  <!-- MAIN EDITOR -->
+  <div class="main" id="mainEditor"></div>
+
+  <!-- JSON PANEL -->
+  <div class="json-panel" id="jsonPanel">
+    <div class="resize-handle resize-handle-left" id="jsonResizeHandle"></div>
+    <div class="json-panel-header">
+      <span>Raw JSON</span>
+      <button class="expand-toggle" id="jsonExpandToggle" onclick="toggleJsonExpand(this)" title="Expand JSON panel">
+        <span class="toggle-track"><span class="toggle-thumb"></span></span>
+        <span class="json-expand-label">Expand</span>
+      </button>
+      <button class="btn btn-xs" onclick="closeJsonPanel()">✕</button>
+    </div>
+    <textarea id="rawJson" spellcheck="false"></textarea>
+    <div class="json-panel-footer">
+      <button class="btn btn-success" onclick="applyRaw()" style="flex:1">✓ Apply</button>
+      <button class="btn btn-xs" onclick="copyJSON()">⎘ Copy</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<!-- EXPORT MODAL -->
+<div class="modal-backdrop" id="exportModal">
+  <div class="modal">
+    <div class="modal-title">⬆ Export JSON</div>
+    <div class="modal-field">
+      <label>File Name</label>
+      <input type="text" id="exportFilename" value="curriculum" placeholder="filename" spellcheck="false"
+        onkeydown="if(event.key==='Enter')doExport()">
+    </div>
+    <div class="modal-row-btns">
+      <button class="btn" style="flex:1;justify-content:center;" onclick="closeExportModal()">✕ Cancel</button>
+      <button class="btn btn-accent" style="flex:1;justify-content:center;" onclick="doExport()">⬇ Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- FILE DROP OVERLAY -->
+<div class="drop-overlay" id="dropOverlay">
+  <div class="drop-zone" id="dropZone">
+    <div class="drop-icon">📂</div>
+    <div class="drop-title">Drop JSON File</div>
+    <div class="drop-sub">Release to load your curriculum JSON<br>anywhere on the screen</div>
+    <div class="drop-badge">.json</div>
+  </div>
+  <div class="drop-dismiss" onclick="hideDropOverlay()">✕ Cancel</div>
+</div>
+
+
+<!-- JS Modules -->
+<script src="js/editor-state-theme.js"></script>
+<script src="js/editor-load.js"></script>
+<script src="js/editor-json-panel.js"></script>
+<script src="js/editor-select-sort.js"></script>
+<script src="js/editor-tree.js"></script>
+<script src="js/editor-render.js"></script>
+<script src="js/editor-drag.js"></script>
+<script src="js/editor-mutations.js"></script>
+<script src="js/editor-ui-panels.js"></script>
+<script src="js/editor-github.js"></script>
+<script src="js/editor-init.js"></script>
+
+<!-- ═══ PLAYLIST MODAL ═══ -->
+<div class="modal-backdrop" id="playlistModal" onclick="if(event.target===this)closePlaylistModal()">
+  <div class="modal">
+    <div class="modal-title">▶ Add YouTube Playlist</div>
+    <div class="modal-field">
+      <label>Playlist URL</label>
+      <div class="playlist-url-wrap">
+        <input type="text" id="playlistUrlInput" placeholder="https://www.youtube.com/playlist?list=PL… or watch?v=…&list=PL…"
+          oninput="onPlaylistUrlChange()" onpaste="setTimeout(onPlaylistUrlChange,10)"
+          autocomplete="off" autocorrect="off" spellcheck="false">
+      </div>
+    </div>
+    <div class="playlist-option-row">
+      <label><input type="checkbox" id="playlistUseTitle" checked> Use video titles as topic titles</label>
+    </div>
+    <div class="playlist-progress" id="playlistProgress">
+      <div class="playlist-progress-bar-wrap"><div class="playlist-progress-bar" id="playlistProgressBar"></div></div>
+      <div class="playlist-progress-text" id="playlistProgressText">Fetching playlist…</div>
+    </div>
+    <div class="playlist-preview" id="playlistPreview"></div>
+    <div class="playlist-meta" id="playlistMeta" style="display:none"></div>
+    <div class="modal-row-btns" style="margin-top:4px">
+      <button class="btn btn-accent" style="flex:1;height:40px;font-size:13px;border-radius:10px;" id="playlistAddBtn" onclick="confirmAddPlaylist()" disabled>＋ Add All Videos</button>
+      <button class="btn" style="height:40px;font-size:13px;border-radius:10px;" onclick="closePlaylistModal()">Cancel</button>
+    </div>
+    <div id="playlistError" style="display:none;font-size:12px;color:var(--red);background:color-mix(in srgb,var(--red) 8%,transparent);border:1px solid color-mix(in srgb,var(--red) 25%,transparent);border-radius:8px;padding:8px 12px;"></div>
+  </div>
+</div>
+
+</div><!-- end #app-root -->
+
+<script src="js/editor-playlist-modal.js"></script>
+<script src="js/editor-video-lookup.js"></script>
+</body>
+</html>

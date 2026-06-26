@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Eduyomi</title>
+  <script>
+    // GitHub Pages / static host 404 redirect trick.
+    // Real pages are served directly; everything else is an SPA deep-link
+    // that should land on index.html with the original path preserved.
+    var path = window.location.pathname;
+    var realPages = ['/editor', '/contributors', '/license',
+                     '/editor.html', '/contributors.html', '/license.html'];
+    var isReal = realPages.some(function(p) {
+      return path === p || path === p + '/';
+    });
+    if (!isReal) {
+      // Store full path+search so index.html can restore it via history.replaceState
+      sessionStorage.setItem('spa-redirect', path + window.location.search);
+      window.location.replace('/');
+    }
+  </script>
+</head>
+<body></body>
+</html>

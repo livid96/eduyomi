@@ -1,0 +1,47 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "editor.wordWrap": "on",
+    "files.associations": {
+      "*.html": "html",
+      "*.css": "css",
+      "*.js": "javascript"
+    },
+    "css.validate": true,
+    "html.format.indentInnerHtml": true,
+    "javascript.format.enable": true,
+    "emmet.includeLanguages": {
+      "javascript": "javascriptreact"
+    },
+    // Explorer: collapse node_modules, show modules clearly
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+      "index.html": "404.html, contributors.html, license.html, editor.html, README.md",
+      "src/css/main.css": "src/css/modules/*.css",
+      "src/js/app.js": "src/js/modules/*.js"
+    },
+    // Live Server settings
+    "liveServer.settings.port": 5500,
+    "liveServer.settings.root": "/",
+    "liveServer.settings.CustomBrowser": "chrome",
+    "liveServer.settings.donotShowInfoMsg": true
+  },
+  "extensions": {
+    "recommendations": [
+      "ritwickdey.LiveServer",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "formulahendry.auto-close-tag",
+      "formulahendry.auto-rename-tag",
+      "bradlc.vscode-tailwindcss",
+      "zignd.html-css-class-completion",
+      "christian-kohler.path-intellisense"
+    ]
+  }
+}

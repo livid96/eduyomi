@@ -1,0 +1,11 @@
+    /* ═══════════════════════════════════
+       AMBIENT
+    ═══════════════════════════════════ */
+    .ambient {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse 65% 48% at 16% 20%, var(--ambient1), transparent),
+        radial-gradient(ellipse 55% 42% at 84% 72%, var(--ambient2), transparent);
+      transition: background 0.4s;
+    }
+

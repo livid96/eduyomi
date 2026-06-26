@@ -1,0 +1,132 @@
+
+/* ═══ PASSWORD GATE ═══ */
+#auth-gate {
+  position: fixed; inset: 0; z-index: 99999;
+  background: var(--bg, #0d0e1a);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Sans', sans-serif;
+}
+#auth-gate .gate-card {
+  background: var(--card-bg, rgba(255,255,255,0.04));
+  border: 1px solid var(--border, rgba(255,255,255,0.09));
+  border-radius: 18px;
+  padding: 28px 26px 24px;
+  width: 100%; max-width: 320px;
+  box-shadow: var(--shadow, 0 24px 64px rgba(0,0,0,0.6));
+  backdrop-filter: blur(24px);
+  display: flex; flex-direction: column; align-items: center; gap: 0;
+}
+#auth-gate .gate-logo {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 19px;
+  background: linear-gradient(120deg, var(--accent, #7c6af7) 0%, color-mix(in srgb, var(--accent,#7c6af7) 70%, white 30%) 50%, #f472b6 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+  margin-bottom: 6px;
+}
+#auth-gate .gate-subtitle {
+  font-size: 13px; color: var(--text-muted, rgba(238,240,255,0.45));
+  margin-bottom: 20px; text-align: center;
+}
+#auth-gate .gate-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--text-muted, rgba(238,240,255,0.38));
+  align-self: flex-start; margin-bottom: 7px;
+}
+#auth-gate .gate-input-wrap {
+  width: 100%; position: relative; margin-bottom: 14px;
+}
+/* Username field with @eduyomi.app suffix */
+#auth-gate .gate-username-wrap {
+  width: 100%; display: flex; align-items: center;
+  background: var(--search-bg, rgba(255,255,255,0.07));
+  border: 1px solid var(--border, rgba(255,255,255,0.11));
+  border-radius: 12px; margin-bottom: 14px;
+  transition: border-color 200ms, background 200ms;
+  overflow: hidden;
+}
+#auth-gate .gate-username-wrap:focus-within {
+  border-color: var(--accent, #7c6af7);
+  background: color-mix(in srgb, var(--accent, #7c6af7) 8%, transparent);
+}
+#auth-gate .gate-username-wrap input {
+  flex: 1; min-width: 0; height: 44px;
+  padding: 0 14px;
+  background: transparent; border: none; outline: none;
+  color: var(--text-primary, #eef0ff); font-family: 'JetBrains Mono', monospace;
+  font-size: 14px; letter-spacing: 0.5px;
+}
+#auth-gate .gate-username-wrap input::placeholder {
+  color: var(--text-muted, rgba(238,240,255,0.25)); letter-spacing: 0;
+}
+#auth-gate .gate-domain-suffix {
+  padding: 0 14px 0 2px;
+  color: color-mix(in srgb, var(--accent, #7c6af7) 75%, transparent);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px; font-weight: 500;
+  white-space: nowrap; flex-shrink: 0;
+  user-select: none; pointer-events: none;
+  line-height: 44px;
+}
+#auth-gate .gate-input {
+  width: 100%; height: 44px; padding: 0 44px 0 14px;
+  background: var(--search-bg, rgba(255,255,255,0.07));
+  border: 1px solid var(--border, rgba(255,255,255,0.11));
+  border-radius: 12px; color: var(--text-primary, #eef0ff);
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  letter-spacing: 2px; outline: none;
+  transition: border-color 200ms, background 200ms;
+}
+#auth-gate .gate-input:focus {
+  border-color: var(--accent, #7c6af7);
+  background: color-mix(in srgb, var(--accent, #7c6af7) 8%, transparent);
+}
+#auth-gate .gate-eye {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--text-muted, rgba(238,240,255,0.35)); font-size: 16px; padding: 4px; line-height: 1;
+  transition: color 150ms;
+}
+#auth-gate .gate-eye:hover { color: var(--text-secondary, rgba(238,240,255,0.7)); }
+#auth-gate .gate-btn-row {
+  width: 100%; display: flex; gap: 10px; margin-top: 4px;
+}
+#auth-gate .gate-btn {
+  flex: 1; height: 44px; border-radius: 12px;
+  background: var(--accent, #7c6af7); border: none; color: #fff;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: opacity 200ms, transform 150ms;
+}
+#auth-gate .gate-btn:hover { opacity: 0.88; }
+#auth-gate .gate-btn:active { transform: scale(0.98); }
+#auth-gate .gate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+#auth-gate .gate-btn-cancel {
+  flex: 1; height: 44px; border-radius: 12px;
+  background: transparent;
+  border: 1px solid var(--border, rgba(255,255,255,0.11));
+  color: var(--text-secondary, rgba(238,240,255,0.58));
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: background 200ms, color 200ms, border-color 200ms, transform 150ms;
+}
+#auth-gate .gate-btn-cancel:hover {
+  background: rgba(248,113,113,0.10);
+  color: #f87171;
+  border-color: rgba(248,113,113,0.35);
+}
+#auth-gate .gate-btn-cancel:active { transform: scale(0.98); }
+#auth-gate .gate-error {
+  font-size: 12px; color: #f87171;
+  background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.25);
+  border-radius: 8px; padding: 8px 12px; width: 100%;
+  text-align: center; margin-top: 12px;
+  display: none;
+}
+#auth-gate .gate-error.show { display: block; }
+#auth-gate .gate-spinner {
+  width: 18px; height: 18px; border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff; border-radius: 50%;
+  animation: spin 0.7s linear infinite; display: inline-block; vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+#app-root { display: none; }
+

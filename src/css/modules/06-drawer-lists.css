@@ -1,0 +1,40 @@
+    /* ═══════════════════════════════════
+       DRAWER: Watch History & Lists
+    ═══════════════════════════════════ */
+    .drawer-panel {
+      padding: 0 14px 10px;
+    }
+    .drawer-panel-title {
+      font-size: .63rem; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-muted);
+      margin: 12px 0 6px;
+    }
+    .drawer-history-list {
+      display: flex; flex-direction: column; gap: 4px;
+      max-height: 220px; overflow-y: auto;
+    }
+    .drawer-history-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 7px 10px; border-radius: 10px;
+      background: var(--surface); border: 1px solid var(--border);
+      cursor: pointer; transition: background var(--transition);
+    }
+    .drawer-history-item:hover { background: var(--surface-hover); }
+    .drawer-history-item-text {
+      flex: 1; min-width: 0;
+      font-size: .78rem; color: var(--text-primary);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .drawer-history-remove {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      background: none; border: 1px solid transparent;
+      color: var(--text-muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--transition);
+    }
+    .drawer-history-remove:hover { border-color: #e05; color: #e05; background: rgba(238,0,85,.08); }
+    .drawer-history-remove svg { width: 10px; height: 10px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; }
+    .drawer-empty-note {
+      font-size: .75rem; color: var(--text-muted); padding: 8px 4px;
+    }
+    #drawer-wb-section { }

@@ -1,0 +1,250 @@
+<!-- FILTER PANEL -->
+<div id="filterPanelOverlay" onclick="closeFilterPanel()"></div>
+<div id="filterPanel">
+  <div class="fp-handle"></div>
+  <div class="fp-tabs">
+    <button class="fp-tab active" onclick="switchFpTab('filter',this)">Filter</button>
+    <button class="fp-tab" onclick="switchFpTab('sort',this)">Sort</button>
+    <button class="fp-tab" onclick="switchFpTab('display',this)">Display</button>
+    <button class="fp-tab" onclick="switchFpTab('group',this)">Group</button>
+  </div>
+  <div class="fp-body">
+
+    <!-- FILTER TAB -->
+    <div class="fp-pane active" id="fp-filter">
+      <div class="fp-row" onclick="toggleFpFilter('watched')" id="fprow-watched">
+        <div class="fp-checkbox"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+        <div><div class="fp-label">Watched</div><div class="fp-label-sub">Topics you've already played</div></div>
+      </div>
+      <div class="fp-row" onclick="toggleFpFilter('unwatched')" id="fprow-unwatched">
+        <div class="fp-checkbox"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+        <div><div class="fp-label">Unwatched</div><div class="fp-label-sub">Topics not yet played</div></div>
+      </div>
+      <div class="fp-row" onclick="toggleFpFilter('bookmarked')" id="fprow-bookmarked">
+        <div class="fp-checkbox"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+        <div><div class="fp-label">Bookmarked</div><div class="fp-label-sub">Your saved topics</div></div>
+      </div>
+    </div>
+
+    <!-- SORT TAB -->
+    <div class="fp-pane" id="fp-sort">
+      <div class="fp-row checked" onclick="setFpSort('default',this)" id="fpsort-default">
+        <div class="fp-radio"><div class="fp-radio-dot"></div></div>
+        <div class="fp-label">Default Order</div>
+      </div>
+      <div class="fp-row" onclick="setFpSort('asc',this)" id="fpsort-asc">
+        <div class="fp-radio"><div class="fp-radio-dot"></div></div>
+        <div class="fp-label">A → Z</div>
+      </div>
+      <div class="fp-row" onclick="setFpSort('desc',this)" id="fpsort-desc">
+        <div class="fp-radio"><div class="fp-radio-dot"></div></div>
+        <div class="fp-label">Z → A</div>
+      </div>
+    </div>
+
+    <!-- DISPLAY TAB -->
+    <div class="fp-pane" id="fp-display">
+      <div class="fp-row checked" onclick="setFpDisplay('list',this)" id="fpdisplay-list">
+        <div class="fp-radio"><div class="fp-radio-dot"></div></div>
+        <div><div class="fp-label">List View</div><div class="fp-label-sub">Standard topic list</div></div>
+      </div>
+      <div class="fp-row" onclick="setFpDisplay('comfortable',this)" id="fpdisplay-comfortable">
+        <div class="fp-radio"><div class="fp-radio-dot"></div></div>
+        <div><div class="fp-label">Comfortable</div><div class="fp-label-sub">More spacing between topics</div></div>
+      </div>
+      <div class="fp-row" onclick="setFpDisplay('compact',this)" id="fpdisplay-compact">
+        <div class="fp-radio"><div class="fp-radio-dot"></div></div>
+        <div><div class="fp-label">Compact</div><div class="fp-label-sub">Denser list, see more at once</div></div>
+      </div>
+      <div style="height:1px;background:var(--border);margin:10px 0;"></div>
+      <div class="fp-row" onclick="toggleFpExpandView(this)" id="fprow-expandview" style="cursor:pointer;">
+        <div class="fp-checkbox" id="fpchk-expandview"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+        <div><div class="fp-label">Expand View</div><div class="fp-label-sub">Chapters start expanded; turn off to collapse</div></div>
+      </div>
+    </div>
+
+    <!-- GROUP TAB -->
+    <div class="fp-pane" id="fp-group">
+      <div class="fp-row checked" onclick="setFpGroup('chapter',this)" id="fpgroup-chapter">
+        <div class="fp-radio"><div class="fp-radio-dot"></div></div>
+        <div><div class="fp-label">By Chapter</div><div class="fp-label-sub">Group topics under chapters</div></div>
+      </div>
+      <div class="fp-row" onclick="setFpGroup('none',this)" id="fpgroup-none">
+        <div class="fp-radio"><div class="fp-radio-dot"></div></div>
+        <div><div class="fp-label">No Grouping</div><div class="fp-label-sub">Flat list of all topics</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SETTINGS PAGE -->
+<div id="settingsModal">
+  <!-- Sticky header with back button -->
+  <div class="settings-page-header">
+    <button class="settings-back-btn" onclick="closeSettingsModal()">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="settings-page-title">Settings</div>
+  </div>
+  <div class="brm-box" style="position:relative;">
+    <div class="brm-sub" style="margin-top:8px;">Customize your Eduyomi experience.</div>
+
+    <div class="settings-section">Data &amp; Backup</div>
+    <div class="settings-toggle-row" onclick="closeMobileDrawer();closeSettingsModal();openBackupRestoreModal('backup')" style="cursor:pointer;padding:12px 0;">
+      <div>
+        <div class="settings-toggle-label">Backup Data</div>
+        <div class="settings-toggle-sub">Download watched &amp; bookmarked topics</div>
+      </div>
+      <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--text-muted);fill:none;stroke-width:2;stroke-linecap:round;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </div>
+    <div class="settings-toggle-row" onclick="closeMobileDrawer();closeSettingsModal();openBackupRestoreModal('restore')" style="cursor:pointer;padding:12px 0;">
+      <div>
+        <div class="settings-toggle-label">Restore Data</div>
+        <div class="settings-toggle-sub">Merge data from a backup file</div>
+      </div>
+      <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--text-muted);fill:none;stroke-width:2;stroke-linecap:round;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+    </div>
+
+    <div class="settings-section">Ad Blocker</div>
+    <div class="settings-toggle-row">
+      <div>
+        <div class="settings-toggle-label">Block Ads</div>
+        <div class="settings-toggle-sub">Automatically mute, skip, and hide YouTube ads</div>
+      </div>
+      <label class="stgl">
+        <input type="checkbox" id="stgl-adblock" onchange="toggleAdBlock(this.checked)">
+        <span class="stgl-track"></span>
+      </label>
+    </div>
+
+    <div class="settings-section">Features</div>
+    <div class="settings-toggle-row">
+      <div>
+        <div class="settings-toggle-label">Watch &amp; Bookmark</div>
+        <div class="settings-toggle-sub">Show eye and bookmark icons on topics and video player</div>
+      </div>
+      <label class="stgl">
+        <input type="checkbox" id="stgl-watchbookmark" onchange="toggleSettingWatchBookmark(this.checked)" >
+        <span class="stgl-track"></span>
+      </label>
+    </div>
+    <div class="settings-toggle-row" id="settings-row-automarkwatched" style="padding-left:16px;border-left:2px solid color-mix(in srgb,var(--accent) 30%,transparent);margin-left:4px;">
+      <div>
+        <div class="settings-toggle-label" style="font-size:.84rem;">Auto-mark as Watched at 75%</div>
+        <div class="settings-toggle-sub">Automatically marks a video as watched when you reach 75% of its duration</div>
+      </div>
+      <label class="stgl">
+        <input type="checkbox" id="stgl-automarkwatched" onchange="toggleSettingAutoMarkWatched(this.checked)">
+        <span class="stgl-track"></span>
+      </label>
+    </div>
+
+    <div class="settings-section">App</div>
+    <div class="settings-toggle-row" id="settingsInstallBtn" onclick="settingsInstallApp()" style="cursor:pointer;">
+      <div>
+        <div class="settings-toggle-label">Install App</div>
+        <div class="settings-toggle-sub">Add Eduyomi to your home screen</div>
+      </div>
+      <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    </div>
+
+  </div>
+</div>
+
+<!-- BACKUP / RESTORE MODAL -->
+<div id="backupRestoreModal" onclick="if(event.target===this)closeBackupRestoreModal()">
+  <div class="brm-box" style="position:relative;">
+    <div class="brm-title" id="brm-title">Backup Data</div>
+    <div class="brm-sub" id="brm-sub">Save your watched and bookmarked topics to a file on your device.</div>
+    <div class="brm-stats">
+      <div class="brm-stat">
+        <div class="brm-stat-num" id="brm-watched-count">0</div>
+        <div class="brm-stat-lbl">Watched</div>
+      </div>
+      <div class="brm-stat">
+        <div class="brm-stat-num" id="brm-bookmark-count">0</div>
+        <div class="brm-stat-lbl">Bookmarked</div>
+      </div>
+    </div>
+    <div class="brm-actions" id="brm-backup-actions">
+      <button class="brm-btn brm-btn-backup" onclick="doBackup()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Backup
+      </button>
+      <button class="brm-btn brm-btn-restore" onclick="closeBackupRestoreModal()">Cancel</button>
+    </div>
+    <div id="brm-restore-actions" style="display:none;">
+      <div class="brm-restore-label">Select a previously saved <strong>.eduyomi-backup.json</strong> file:</div>
+      <div class="brm-actions">
+        <button class="brm-btn brm-btn-backup" onclick="document.getElementById('brm-file-input').click()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Choose File
+        </button>
+        <button class="brm-btn brm-btn-restore" onclick="closeBackupRestoreModal()">Cancel</button>
+      </div>
+    </div>
+    <button class="vid-action-btn brm-close" onclick="closeBackupRestoreModal()" style="position:absolute;top:16px;right:16px;">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+</div>
+<input type="file" id="brm-file-input" accept=".json" onchange="doRestore(this)">
+
+
+<!-- LIST POPUP (History / Watched / Bookmarks) -->
+<div id="listPopupOverlay" onclick="if(event.target===this)closeListPopup()">
+  <div id="listPopupBox">
+    <div class="lp-header">
+      <div class="lp-title-wrap">
+        <div class="lp-icon" id="lp-icon"></div>
+        <div>
+          <div class="lp-title" id="lp-title"></div>
+          <div class="lp-count" id="lp-count"></div>
+        </div>
+      </div>
+      <button class="lp-close" onclick="closeListPopup()">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="lp-list" id="lp-list"></div>
+    <div class="lp-footer">
+      <button class="lp-clear-btn" id="lp-clear-btn" onclick="clearListPopup()">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        Clear All
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- REPOSITORY MODAL -->
+<div id="repoModal" onclick="if(event.target===this)closeRepoModal()">
+  <div class="repo-modal-box">
+    <div class="repo-modal-handle"></div>
+    <div class="repo-modal-header">
+      <div>
+        <div class="repo-modal-title">Repositories</div>
+        <div class="repo-modal-sub">Add repos · select a dataset to load</div>
+      </div>
+      <button class="repo-modal-close" onclick="closeRepoModal()">✕</button>
+    </div>
+    <div class="repo-modal-body">
+      <div class="repo-add-section">
+        <div class="repo-add-label">Add repository</div>
+        <div class="repo-input-row">
+          <input id="repoInput" type="search" placeholder="user/repo · GitHub URL · direct .json link"
+                 autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                 onkeydown="if(event.key==='Enter')setRepo()">
+          <button class="repo-set-btn" onclick="setRepo()">Add</button>
+        </div>
+        <div class="repo-status" id="repoStatus"></div>
+      </div>
+      <div id="repoSavedSection" style="display:none">
+        <div class="repo-section-label">My repositories</div>
+        <div class="repo-saved-list" id="repoSavedList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PWA: Service Worker (injected as blob so it works from a single HTML file) -->
