@@ -11,6 +11,17 @@ function openSubjectView(yi, si) {
   document.getElementById('tabsSection').style.display = 'none';
   document.getElementById('subjectView').classList.add('visible');
   renderSubjectView();
+  // Update URL
+  if (window._appReady && window.routerPushSubject) {
+    var d = window.MASTER_DATA;
+    var yearTitle = d && d[yi] ? (d[yi].year_title || ('Year ' + (yi + 1))) : null;
+    var s = d && d[yi] && d[yi].subjects[si];
+    var subjectName = s ? ((s.subject_name && s.subject_name.en) || s.name || s.subject || '') : null;
+    if (yearTitle && subjectName) {
+      routerPushSubject(yearTitle, subjectName);
+      if (window.routerSetTitle) routerSetTitle([yearTitle, subjectName]);
+    }
+  }
 }
 
 function goBack() {
@@ -18,6 +29,7 @@ function goBack() {
   document.getElementById('yearContents').style.display = '';
   document.getElementById('tabsSection').style.display = '';
   currentSubjectData = null;
+  if (window._appReady && window.routerPushHome) { routerPushHome(); routerSetTitle && routerSetTitle([]); }
 }
 
 function goHome() {
@@ -171,6 +183,17 @@ function toggleChapter(headerEl) {
     }
     if (headerEl.classList.contains('open')) openChapters.add(origIdx);
     else openChapters.delete(origIdx);
+  }
+  // Update URL with chapter slug
+  if (window._appReady && window.routerPushChapter && currentSubjectData) {
+    var d = window.MASTER_DATA;
+    var yi = currentSubjectData.yi, si = currentSubjectData.si;
+    var yearTitle = d && d[yi] ? (d[yi].year_title || ('Year ' + (yi + 1))) : null;
+    var s = d && d[yi] && d[yi].subjects[si];
+    var subjectName = s ? ((s.subject_name && s.subject_name.en) || s.name || s.subject || '') : null;
+    var titleEl = headerEl.querySelector('.chapter-title-en');
+    var chName = titleEl ? titleEl.textContent.replace(/^\d+\.\s*/, '').trim() : null;
+    if (yearTitle && subjectName && chName) routerPushChapter(yearTitle, subjectName, chName);
   }
 }
 

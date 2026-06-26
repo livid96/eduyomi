@@ -78,6 +78,27 @@ async function playTopic(videoId, title) {
   const topicEl = document.getElementById('topic-' + videoId);
   if (topicEl) topicEl.classList.add('playing');
 
+  // Update URL with topic path
+  if (window._appReady && window.routerPushTopic && currentSubjectData) {
+    const d = window.MASTER_DATA;
+    const yi = currentSubjectData.yi, si = currentSubjectData.si;
+    const yearTitle = d && d[yi] ? (d[yi].year_title || ('Year ' + (yi + 1))) : null;
+    const s = d && d[yi] && d[yi].subjects[si];
+    const subjectName = s ? ((s.subject_name && s.subject_name.en) || s.name || s.subject || '') : null;
+    let chName = null;
+    if (topicEl) {
+      const block = topicEl.closest('.chapter-block');
+      if (block) {
+        const titleEl = block.querySelector('.chapter-title-en');
+        chName = titleEl ? titleEl.textContent.replace(/^\d+\.\s*/, '').trim() : null;
+      }
+    }
+    if (yearTitle && subjectName && chName && title) {
+      routerPushTopic(yearTitle, subjectName, chName, title);
+      if (window.routerSetTitle) routerSetTitle([yearTitle, subjectName, title]);
+    }
+  }
+
   // Fetch channel info
   try {
     const r = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
