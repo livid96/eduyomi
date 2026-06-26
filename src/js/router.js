@@ -15,9 +15,11 @@
 (function () {
   'use strict';
 
+  // ── Capture landing URL immediately — before buildPage/showYear overwrites it ─
+  var _landingPath = location.pathname + location.search;
+
   // ── Base path (works on GitHub Pages subdirectories too) ─────────────────────
   var BASE = (function () {
-    // If served from a subpath like /eduyomi/, strip that prefix
     var base = document.querySelector('base[href]');
     if (base) return base.getAttribute('href').replace(/\/$/, '');
     return '';
@@ -64,24 +66,22 @@
   };
 
   // ── Router push helpers (called by router-patch.js) ──────────────────────────
+  // No _appReady guard here — URL updates always happen immediately.
+  // routerInit restores _landingPath before handleRoute so deep links work.
   window.routerPushHome = function () {
-    if (!window._appReady) return;
     history.replaceState(null, '', BASE + '/');
     document.title = 'Eduyomi';
   };
   window.routerPushSubject = function (year, subjectName) {
-    if (!window._appReady) return;
     var url = subjectName
       ? buildDeepLink(year, subjectName)
-      : BASE + '/' + (window._routerSlugify ? window._routerSlugify(String(year)) : String(year));
+      : BASE + '/' + slugify(String(year));
     history.replaceState(null, '', url);
   };
   window.routerPushChapter = function (year, subjectName, chapterName) {
-    if (!window._appReady) return;
     history.replaceState(null, '', buildDeepLink(year, subjectName, chapterName));
   };
   window.routerPushTopic = function (year, subjectName, chapterName, topicTitle) {
-    if (!window._appReady) return;
     history.replaceState(null, '', buildDeepLink(year, subjectName, chapterName, topicTitle));
   };
 
@@ -93,11 +93,6 @@
   // ── Main route handler ───────────────────────────────────────────────────────
   function handleRoute() {
     var route = parseRoute();
-
-    if (!window._appReady) {
-      window._pendingRoute = route;
-      return;
-    }
 
     // Real pages — never intercept these
     var path = location.pathname;
@@ -163,9 +158,14 @@
   // ── Browser back/forward ─────────────────────────────────────────────────────
   window.addEventListener('popstate', handleRoute);
 
-  // ── Called by app-init (after all modules load) ──────────────────────────────
+  // ── Called once after all modules load and first buildPage completes ──────────
   window.routerInit = function () {
     window._appReady = true;
+    // During startup, buildPage → showYear overwrites the URL with the default
+    // year. Restore the original landing URL so handleRoute navigates correctly.
+    if (_landingPath && _landingPath !== (BASE + '/') && location.pathname !== _landingPath) {
+      history.replaceState(null, '', _landingPath);
+    }
     handleRoute();
   };
 
